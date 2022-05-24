@@ -10,9 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_05_22_165437) do
+ActiveRecord::Schema[7.0].define(version: 2022_05_24_003441) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  # Custom types defined in this database.
+  # Note that some types may not work with other database engines. Be careful if changing database.
+  create_enum "kind", ["dividend", "interest_on_equity", "income"]
 
   create_table "allowlisted_jwts", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -27,6 +31,27 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_22_165437) do
     t.datetime "updated_at", null: false
     t.index ["jti"], name: "index_allowlisted_jwts_on_jti", unique: true
     t.index ["user_id"], name: "index_allowlisted_jwts_on_user_id"
+  end
+
+  create_table "assets", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_assets_on_name", unique: true
+  end
+
+  create_table "earnings", force: :cascade do |t|
+    t.bigint "asset_id", null: false
+    t.bigint "user_id", null: false
+    t.enum "kind", null: false, enum_type: "kind"
+    t.date "paid_at", null: false
+    t.integer "quantity", null: false
+    t.decimal "unit_price", precision: 8, scale: 2, null: false
+    t.decimal "net_value", precision: 8, scale: 2, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["asset_id"], name: "index_earnings_on_asset_id"
+    t.index ["user_id"], name: "index_earnings_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -44,4 +69,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_22_165437) do
   end
 
   add_foreign_key "allowlisted_jwts", "users", on_delete: :cascade
+  add_foreign_key "earnings", "assets"
+  add_foreign_key "earnings", "users"
 end

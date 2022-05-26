@@ -34,7 +34,7 @@ class Users::SessionsController < Devise::SessionsController
       end
       respond_with(resource, { aud: aud })
     else
-      render json: "Auth failure", status: 401
+      render json: 'authentication failure', status: 401
     end
   rescue => e
     render json: { error: I18n.t('api.oops') }, status: 500

@@ -41,8 +41,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_24_003441) do
   end
 
   create_table "earnings", force: :cascade do |t|
-    t.bigint "asset_id", null: false
     t.bigint "user_id", null: false
+    t.bigint "asset_id", null: false
     t.enum "kind", null: false, enum_type: "kind"
     t.date "paid_at", null: false
     t.integer "quantity", null: false
@@ -51,6 +51,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_24_003441) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["asset_id"], name: "index_earnings_on_asset_id"
+    t.index ["kind"], name: "index_earnings_on_kind"
+    t.index ["user_id", "asset_id", "paid_at", "kind"], name: "index_earnings_on_user_id_and_asset_id_and_paid_at_and_kind", unique: true
     t.index ["user_id"], name: "index_earnings_on_user_id"
   end
 

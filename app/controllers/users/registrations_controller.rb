@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Users::RegistrationsController < Devise::RegistrationsController
   # GET /resource/sign_up
   # def new
@@ -22,7 +20,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
         # set_flash_message! :notice, :"signed_up_but_#{resource.inactive_message}"
         # expire_data_after_sign_in!
         # respond_with resource, location: after_inactive_sign_up_path_for(resource)
-        render status: 204
+        render status: 401
       end
     else
       render status: 422, json: resource.errors

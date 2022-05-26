@@ -1,0 +1,7 @@
+Style/FrozenStringLiteralComment:
+  Enabled: true
+  EnforcedStyle: never
+  SafeAutoCorrect: false
+
+Style/Documentation:
+  Enabled: false
